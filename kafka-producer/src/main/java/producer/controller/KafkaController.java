@@ -1,18 +1,22 @@
 package producer.controller;
 
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 import producer.broker.producer.TopicProducer;
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import producer.model.PedidoData;
 
 @RequiredArgsConstructor
 @RestController
 @RequestMapping(value = "/kafka")
 public class KafkaController {
+
     private final TopicProducer topicProducer;
-    @GetMapping(value = "/send")
-    public void send(){
-        topicProducer.send("Mensagem de teste enviada ao tópico");
+
+    @PostMapping(path = "/salvar-pedido")
+    public ResponseEntity<String> SalvarPedido(@RequestBody PedidoData pedido) {
+        topicProducer.send(pedido);
+        return ResponseEntity.ok("Pedido enviado com sucesso.");
     }
+
 }

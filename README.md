@@ -77,20 +77,29 @@ $ docker-compose down
 
 ## Teste da Messageria
 
-Para testar a aplicação abra o navegador e acesse o endereço:<br>
+Para testar a aplicação abra o Postman e insira os seguintes dados:<br>
 
-http://localhost:8081/kafka/publish/Sam
+POST<br>
+http://localhost:8081/kafka/salvar-pedido
+
+```
+{
+    "codigo": "111",
+    "nomeProduto": "xxxxxxx",
+    "valor": "11.11"
+}
+```
 
 Após o envio retornará a seguinte mensagem: <br>
 
 ```
-Published successfully
+Pedido enviado com sucesso.
 ```
 
 E no console:<br>
 
 ```
-Consumed message: {"name":"Sam","dept":"Technology","salary":12000}
+Evento Recebido = PedidoData(codigo=111, nomeProduto=xxxxxxx, valor=11.11)
 ```
 
 ## Licença

@@ -14,11 +14,11 @@ public class TopicProducer {
     @Value("${topic.name.producer}")
     private String topicName;
 
-    private final KafkaTemplate<String, String> kafkaTemplate;
+    private final KafkaTemplate<Object, Object> kafkaTemplate;
 
-    public void send(String message){
-        log.info("Payload enviado: {}",  message);
-        kafkaTemplate.send(topicName, message);
+    public <T> void send(T message){
+        log.info("Payload enviado: {}",  message.toString());
+        kafkaTemplate.send(topicName, message.toString());
     }
 
 }
