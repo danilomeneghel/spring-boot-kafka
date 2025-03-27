@@ -30,23 +30,25 @@ $ git clone https://github.com/danilomeneghel/spring-boot-kafka.git
 $ cd spring-boot-kafka
 ```
 
-## Maven
+## Kafka
 
 Primeiro rode o Kafka.<br>
 Caso não tenha o Kafka instalado, execute o seguinte comando via Docker:
 
 ```
-$ docker network create app-tier --driver bridge
-$ docker run -d --name zookeeper-server --network app-tier -e ALLOW_ANONYMOUS_LOGIN=yes bitnami/zookeeper:latest
-$ docker run -d --name kafka-server --network app-tier -e ALLOW_PLAINTEXT_LISTENER=yes -e KAFKA_CFG_ZOOKEEPER_CONNECT=zookeeper-server:2181 bitnami/kafka:latest
-$ docker run -it --rm --network app-tier -e KAFKA_CFG_ZOOKEEPER_CONNECT=zookeeper-server:2181 bitnami/kafka:latest kafka-topics.sh --list  --bootstrap-server kafka-server:9092
+docker network create app-tier --driver bridge
+docker run -d --name zookeeper-server --network app-tier -e ALLOW_ANONYMOUS_LOGIN=yes bitnami/zookeeper:3.8.0
+docker run -d --name kafka-server --network app-tier -p 9092:9092 -e ALLOW_PLAINTEXT_LISTENER=yes -e KAFKA_CFG_ZOOKEEPER_CONNECT=zookeeper-server:2181 -e KAFKA_CFG_ADVERTISED_LISTENERS=PLAINTEXT://127.0.0.1:9092 -e KAFKA_CFG_LISTENERS=PLAINTEXT://0.0.0.0:9092 bitnami/kafka:3.3.2
+docker run -it --rm --network app-tier -e KAFKA_CFG_ZOOKEEPER_CONNECT=zookeeper-server:2181 bitnami/kafka:3.3.2 kafka-topics.sh --list --bootstrap-server kafka-server:9092
 ```
+
+## Maven
 
 Para carregar o projeto producer, digite no terminal:
 
 ```
 $ cd spring-boot-kafka-producer
-$ ./mvnw spring-boot:run
+$ ./mvnw spring-boot:run -Dspring-boot.run.profiles=dev
 ```
 
 Para carregar o projeto consumer, digite no terminal:
